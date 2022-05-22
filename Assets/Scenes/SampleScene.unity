@@ -152,9 +152,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   seed: 0
   viewSize: 1
+  isInfininte: 0
   drawAir: 0
   drawSolids: 0
-  drawChunkGizmos: 0
+  drawCulled: 0
+  drawChunkGizmos: 1
   textureAtlas: {fileID: 2100000, guid: 5dfa6d15f98447440bddcf60c09e9e9a, type: 2}
 --- !u!4 &180545578
 Transform:
@@ -186,7 +188,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!108 &705507994
 Light:
   m_ObjectHideFlags: 0

@@ -6,7 +6,7 @@ public class Chunk : MonoBehaviour
 {
     public Material atlas;
     public Vector3 worldPosition = new Vector3(0, 0, 0);
-    public static Vector3Int chunkSize = new Vector3Int(16, 128, 16);
+    public static Vector3Int chunkSize = new Vector3Int(16, 16, 16);
     public Block[,,] blocks;
 
     public NoiseSettings[] noiseSettings = new NoiseSettings[] {
@@ -74,11 +74,26 @@ public class Chunk : MonoBehaviour
                 for (int y = 0; y <= noise; y++)
                 {
                     position = new Vector3Int(x, y, z);
-                    SetBlockAt(x, y, z, new BlockTest(worldPosition, position));
+                    SetBlockAt(x, y, z, new BlockDirt(worldPosition, position));
                 }
 
                 position = new Vector3Int(x, 0, z);
                 SetBlockAt(x, 0, z, new BlockBedrock(worldPosition, position));
+            }
+        }
+
+        int xp = chunkSize.x / 2;
+        int zp = chunkSize.z / 2;
+
+        for (int x = -1; x < 2; x++)
+        {
+            for (int y = 0; y < chunkSize.y; y++)
+            {
+                for (int z = -1; z < 2; z++)
+                {
+                    Vector3Int position = new Vector3Int(xp + x, y, zp + z);
+                    SetBlockAt(x, y, z, new BlockAir(worldPosition, position));
+                }
             }
         }
 
