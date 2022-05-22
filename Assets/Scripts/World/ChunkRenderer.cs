@@ -40,11 +40,11 @@ public class ChunkRenderer : MonoBehaviour
     {
         int index = 0;
 
-        for (int x = 0; x < chunk.chunkSize.x; x++)
+        for (int x = 0; x < Chunk.chunkSize.x; x++)
         {
-            for (int y = 0; y < chunk.chunkSize.y; y++)
+            for (int y = 0; y < Chunk.chunkSize.y; y++)
             {
-                for (int z = 0; z < chunk.chunkSize.z; z++)
+                for (int z = 0; z < Chunk.chunkSize.z; z++)
                 {
                     Block block = chunk.GetBlockAt(x, y, z);
                     var adjacent = chunk.BlockIsAdjacent(BlockIDs.AIR, x, y, z);
@@ -146,7 +146,6 @@ public class ChunkRenderer : MonoBehaviour
                 bottomRight = new Vector3(position.x + Block.blockSize.x, heightB, position.z + Block.blockSize.z);
                 break;
             case LEFT: // Left
-                Debug.Log("Draw left face");
                 topLeft = new Vector3(position.x, heightA, position.z);
                 topRight = new Vector3(position.x, heightA, position.z + Block.blockSize.z);
 
@@ -206,7 +205,6 @@ public class ChunkRenderer : MonoBehaviour
 
         if (!invert)
         {
-            Debug.Log("normal tri");
             tris.Add(index);
             tris.Add(index + 2);
             tris.Add(index + 1);
@@ -216,7 +214,6 @@ public class ChunkRenderer : MonoBehaviour
             tris.Add(index + 3);
         } else
         {
-            Debug.Log("invert tris");
             tris.Add(index + 1);
             tris.Add(index + 2);
             tris.Add(index);

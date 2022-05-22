@@ -6,8 +6,44 @@ public class Chunk : MonoBehaviour
 {
     public Material atlas;
     public Vector3 worldPosition = new Vector3(0, 0, 0);
-    public Vector3Int chunkSize = new Vector3Int(16, 16, 16);
+    public static Vector3Int chunkSize = new Vector3Int(16, 16, 16);
     public Block[,,] blocks;
+
+    public NoiseSettings[] noiseSettings = new NoiseSettings[] {
+        new NoiseSettings() {
+            noiseType = NoiseSettings.NoiseType.Simplex,
+            enabled = true,
+            interations = 1,
+            strength = 10,
+            roughness = 2,
+            scale = 0.29f,
+            persistance = 1,
+            lacunarity = 1,
+            minValue = -1.26f
+        },
+        new NoiseSettings() {
+            noiseType = NoiseSettings.NoiseType.Perlin,
+            enabled = true,
+            interations = 1,
+            strength = 1,
+            roughness = 13.85f,
+            scale = 2,
+            persistance = 1,
+            lacunarity = 1,
+            minValue = 5.13f
+        },
+        new NoiseSettings() {
+            noiseType = NoiseSettings.NoiseType.Fractal,
+            enabled = true,
+            interations = 4,
+            strength = 1.26f,
+            roughness = 1,
+            scale = -1.35f,
+            persistance = 1,
+            lacunarity = 1,
+            minValue = -2
+        }
+    };
 
     public new ChunkRenderer renderer;
 
@@ -24,14 +60,20 @@ public class Chunk : MonoBehaviour
         renderer.Init(this);
 
         FillWithAir();
-
-        for (int x = 1; x < chunkSize.x - 1; x++)
+        for(int x = 0; x < chunkSize.x; x++)
         {
-            for (int y = 1; y < chunkSize.y - 1; y++)
+            for(int z = 0; z < chunkSize.y; z++)
             {
-                for (int z = 1; z < chunkSize.z - 1; z++)
+                int startY = chunkSize.y / 2;
+                // Generate surface
+                int noise = startY + CalculateHeight(x, z);
+                Vector3Int position = new Vector3Int(x, noise, z);
+                SetBlockAt(x, noise, z, new BlockTest(worldPosition, position));
+
+                // Fill ground underneath
+                for (int y = noise; y > 0; y--)
                 {
-                    Vector3Int position = new Vector3Int(x, y, z);
+                    position = new Vector3Int(x, y, z);
                     SetBlockAt(x, y, z, new BlockTest(worldPosition, position));
                 }
             }
@@ -53,9 +95,13 @@ public class Chunk : MonoBehaviour
             }
         }
     }
-
     void SetBlockAt(int x, int y, int z, Block block)
     {
+        if (x < 0 || x >= chunkSize.x ||
+            y < 0 || y >= chunkSize.y ||
+            z < 0 || z >= chunkSize.z)
+            return;
+
         blocks[x, y, z] = block;
     }
 
@@ -92,6 +138,33 @@ public class Chunk : MonoBehaviour
                                         GetBlockAt(x, y, z - 1)
                                      };
         return checker;
+    }
+
+    int CalculateHeight(int x, int z)
+    {
+        int sample = 0;
+        float offset = 5000.0f;
+        float amplitude = 1;
+
+        int strength = 1;
+        float scaleX = (chunkSize.x * Block.blockSize.x);
+        float scaleZ = (chunkSize.z * Block.blockSize.z);
+
+        float chunkX = worldPosition.x + scaleX;
+        float chunkZ = worldPosition.z + scaleZ;
+
+        float roughness = 2f;
+        float frequancy = 1f;
+
+        float noiseX = WorldGenerator.instance.seed + (offset + chunkX + x) * roughness / scaleX;
+        float noiseZ = WorldGenerator.instance.seed + (offset + chunkZ + z) * roughness / scaleZ;
+
+        sample += Mathf.RoundToInt(Mathf.PerlinNoise(noiseX, noiseZ) * frequancy);
+        frequancy *= amplitude;
+
+        sample *= strength;
+
+        return sample;
     }
 
     public void DrawGizmos()
