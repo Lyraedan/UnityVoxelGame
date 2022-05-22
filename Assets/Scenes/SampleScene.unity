@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6aa198d51ede8e46b8d239c5d66e587, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seed: 0
+  seed: 1
   viewSize: 1
   isInfininte: 0
   drawAir: 0

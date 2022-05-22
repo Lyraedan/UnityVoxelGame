@@ -71,7 +71,7 @@ public class Chunk : MonoBehaviour
                 float height = CalculateHeight(x, startY, z, FastNoiseLite.NoiseType.Perlin);
                 int noise = startY + Mathf.RoundToInt(height);
                 Vector3Int position = new Vector3Int(x, startY, z);
-                SetBlockAt(x, noise, z, new BlockTest(worldPosition, position));
+                SetBlockAt(x, noise, z, new BlockGrass(worldPosition, position));
 
                 // Fill ground underneath
                 for (int y = 0; y <= noise; y++)

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlockTest : Block
+public class BlockGrass : Block
 {
-    public BlockTest(Vector3 worldPosition, Vector3Int position)
+    public BlockGrass(Vector3 worldPosition, Vector3Int position)
     {
         Construct(worldPosition,
                   position,
