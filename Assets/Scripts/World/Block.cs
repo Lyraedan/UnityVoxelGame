@@ -50,5 +50,10 @@ public class Block
             Gizmos.color = Color.red;
             Gizmos.DrawCube(worldPosition + position, blockSize);
         }
+        else if (id == BlockIDs.BEDROCK)
+        {
+            Gizmos.color = Color.gray;
+            Gizmos.DrawCube(worldPosition + position, blockSize);
+        }
     }
 }

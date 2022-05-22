@@ -6,7 +6,7 @@ public class Chunk : MonoBehaviour
 {
     public Material atlas;
     public Vector3 worldPosition = new Vector3(0, 0, 0);
-    public static Vector3Int chunkSize = new Vector3Int(16, 16, 16);
+    public static Vector3Int chunkSize = new Vector3Int(16, 128, 16);
     public Block[,,] blocks;
 
     public NoiseSettings[] noiseSettings = new NoiseSettings[] {
@@ -64,7 +64,7 @@ public class Chunk : MonoBehaviour
         {
             for(int z = 0; z < chunkSize.y; z++)
             {
-                int startY = chunkSize.y / 2;
+                int startY = chunkSize.y / 3;
                 // Generate surface
                 int noise = startY + CalculateHeight(x, z);
                 Vector3Int position = new Vector3Int(x, noise, z);
