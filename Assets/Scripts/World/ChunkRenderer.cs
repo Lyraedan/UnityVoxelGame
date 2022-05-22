@@ -231,10 +231,12 @@ public class ChunkRenderer : MonoBehaviour
         normals.Add(normalA);
         normals.Add(normalB);
 
-        uvs.Add(new Vector2(block.textureCoords.x, block.textureCoords.y));
-        uvs.Add(new Vector2(block.textureCoords.x + Block.textureSize, block.textureCoords.y));
-        uvs.Add(new Vector2(block.textureCoords.x, block.textureCoords.y + Block.textureSize));
-        uvs.Add(new Vector2(block.textureCoords.x + Block.textureSize, block.textureCoords.y + Block.textureSize));
+        float width = Block.textureSize;
+        float height = Block.textureSize;
+        uvs.Add(new Vector2(block.textureCoords.x * Block.textureSize, block.textureCoords.y * Block.textureSize));
+        uvs.Add(new Vector2(block.textureCoords.x * Block.textureSize + width, block.textureCoords.y * Block.textureSize));
+        uvs.Add(new Vector2(block.textureCoords.x * Block.textureSize, block.textureCoords.y * Block.textureSize + height));
+        uvs.Add(new Vector2(block.textureCoords.x * Block.textureSize + width, block.textureCoords.y * Block.textureSize + height));
 
         int nextIndex = index + 4;
         return nextIndex;

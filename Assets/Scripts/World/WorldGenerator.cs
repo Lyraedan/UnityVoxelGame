@@ -18,6 +18,7 @@ public class WorldGenerator : MonoBehaviour
     public bool isInfininte = false;
     public bool drawAir = false;
     public bool drawSolids = false;
+    public bool drawCulled = false;
     public bool drawChunkGizmos = true;
     public Material textureAtlas;
     Dictionary<string, Chunk> chunks = new Dictionary<string, Chunk>();
@@ -34,17 +35,6 @@ public class WorldGenerator : MonoBehaviour
         {
             GenerateChunkIfWeNeedTo();
         }
-
-        /*
-        GenerateChunkAt(new Vector3(16, 0, 0));
-        GenerateChunkAt(new Vector3(0, 0, 16));
-
-        GenerateChunkAt(new Vector3(-16, 0, 0));
-        GenerateChunkAt(new Vector3(0, 0, -16));
-
-        //GenerateChunkAt(new Vector3(0, 16, 0));
-        //GenerateChunkAt(new Vector3(0, -16, 0));
-        */
     }
 
     private void Update()
@@ -59,6 +49,7 @@ public class WorldGenerator : MonoBehaviour
         if (!chunks.ContainsKey(key))
         {
             GameObject chunkGO = new GameObject(key);
+            chunkGO.transform.SetParent(transform);
             Chunk chunk = chunkGO.AddComponent<Chunk>();
             chunk.atlas = textureAtlas;
             chunk.Generate(position);

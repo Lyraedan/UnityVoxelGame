@@ -71,11 +71,14 @@ public class Chunk : MonoBehaviour
                 SetBlockAt(x, noise, z, new BlockTest(worldPosition, position));
 
                 // Fill ground underneath
-                for (int y = noise; y > 0; y--)
+                for (int y = 0; y <= noise; y++)
                 {
                     position = new Vector3Int(x, y, z);
                     SetBlockAt(x, y, z, new BlockTest(worldPosition, position));
                 }
+
+                position = new Vector3Int(x, 0, z);
+                SetBlockAt(x, 0, z, new BlockBedrock(worldPosition, position));
             }
         }
 
@@ -188,6 +191,10 @@ public class Chunk : MonoBehaviour
                         {
                             if (WorldGenerator.instance.drawSolids)
                                 block.DrawGizmos();
+                        } else
+                        {
+                            if (WorldGenerator.instance.drawSolids && WorldGenerator.instance.drawCulled)
+                                block.DrawCulledGizmos();
                         }
                     }
                 }
